@@ -1,0 +1,13 @@
+#IntelliJ IDEA
+.idea
+*.iml
+#Eclipse files
+.project
+.classpath
+.settings
+#Genral ignoring
+*/target
+target
+logs
+*.metadata
+/s4hana_pipeline/
