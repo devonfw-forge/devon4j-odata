@@ -1,7 +1,7 @@
-package com.devonfw.module.odata.logic.constraint.exception;
+package com.devonfw.module.odata.common.constraint.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import com.devonfw.module.odata.logic.constraint.Constraint;
+import com.devonfw.module.odata.common.constraint.Constraint;
 
 public class ConstraintViolationException extends RuntimeException {
 

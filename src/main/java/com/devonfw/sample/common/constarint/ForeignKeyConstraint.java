@@ -1,8 +1,10 @@
-package com.devonfw.module.odata.logic.constraint;
+package com.devonfw.sample.common.constarint;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import com.devonfw.module.odata.common.constraint.Constraint;
 
 @Getter
 @NoArgsConstructor

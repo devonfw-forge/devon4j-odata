@@ -23,7 +23,7 @@ import com.devonfw.module.odata.common.api.ODataEntity;
 import com.devonfw.module.odata.common.api.ODataSet;
 import com.devonfw.module.odata.logic.api.LogicComponent;
 import com.devonfw.module.odata.logic.api.validation.ValidationRule;
-import com.devonfw.module.odata.logic.constraint.exception.ConstraintViolationException;
+import com.devonfw.module.odata.common.constraint.exception.ConstraintViolationException;
 import com.devonfw.module.odata.logic.util.DaoLogicUtil;
 import com.devonfw.module.odata.logic.util.ODataAnnotationNavInfoUtil;
 

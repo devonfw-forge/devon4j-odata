@@ -71,41 +71,50 @@ public class DaoLogicHelper {
 
     int resultOperation = 0;
 
-    if (targetKey == null) {
-      logger.error("Empty target id, its not possible to set relation for {} ", targetEntityClass);
+    if (targetKey == null || navigationInfo==null) {
+      logger.error("Empty target id or navigation, its not possible to set relation for {} ", targetEntityClass);
       return sourceTo;
 
     } else if (targetKey < 0) {
       resultOperation =
         deleteRelation(Math.abs(targetKey), sourceTo, targetEntityClass, navigationInfo, entityClass);
+
     } else {
       entityManager.flush();
-
-      String navigation = ODataManagingServiceUtil.getFieldName(navigationInfo);
-      String navigationProp = Introspector.decapitalize(navigationProperty);
-
-      if (navigationInfo.getToMultiplicity().equals(EdmMultiplicity.MANY)) {
-        if (navigationProp != null && !navigation.equals(navigationProp)) {
-          resultOperation =
-            setRelationToMany(sourceTo.getId(), targetKey, navigation, targetEntityClass);
-        } else {
-          resultOperation =
-            setRelationToMany(targetKey, sourceTo.getId(), navigation, entityClass);
-        }
-      } else if (navigationInfo.getToMultiplicity().equals(EdmMultiplicity.ONE)) {
-        if (navigationProp != null && !navigation.equals(navigationProp)) {
-          resultOperation =
-            setRelationToOne(targetKey, navigation,  sourceTo.getId(), targetEntityClass);
-        } else {
-          resultOperation = setRelationToOne(sourceTo.getId(), navigation, targetKey, entityClass);
-        }
-      }
-
+      resultOperation =
+              setRelation(targetKey, sourceTo, targetEntityClass, navigationInfo, entityClass, navigationProperty,
+                      resultOperation);
       entityManager.flush();
     }
     showMessageLogFromCrudOperation(resultOperation, sourceTo);
     S sourceEntity = (S) repository.getOne(sourceTo.getId());
     return mapper.map(sourceEntity, toClass);
+  }
+
+  private <T extends ODataSet, S> int setRelation(Long targetKey, T sourceTo, Class<?> targetEntityClass,
+          ODataAnnotationNavInfoUtil navigationInfo, Class<S> entityClass, String navigationProperty,
+          int resultOperation) throws ODataException {
+
+    String navigation = ODataManagingServiceUtil.getFieldName(navigationInfo);
+    String navigationProp = Introspector.decapitalize(navigationProperty);
+
+    if (navigationInfo.getToMultiplicity().equals(EdmMultiplicity.MANY)) {
+      if (navigationProp != null && !navigation.equals(navigationProp)) {
+        resultOperation =
+          setRelationToMany(sourceTo.getId(), targetKey, navigation, targetEntityClass);
+      } else {
+        resultOperation =
+          setRelationToMany(targetKey, sourceTo.getId(), navigation, entityClass);
+      }
+    } else if (navigationInfo.getToMultiplicity().equals(EdmMultiplicity.ONE)) {
+      if (navigationProp != null && !navigation.equals(navigationProp)) {
+        resultOperation =
+          setRelationToOne(targetKey, navigation,  sourceTo.getId(), targetEntityClass);
+      } else {
+        resultOperation = setRelationToOne(sourceTo.getId(), navigation, targetKey, entityClass);
+      }
+    }
+    return resultOperation;
   }
 
   @Transactional

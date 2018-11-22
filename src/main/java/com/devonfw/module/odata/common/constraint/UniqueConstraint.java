@@ -1,4 +1,4 @@
-package com.devonfw.module.odata.logic.constraint;
+package com.devonfw.module.odata.common.constraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
