@@ -14,7 +14,9 @@ public class GenericClassConfiguration {
     @Bean(SINGLE_GENERIC_CLASS)
     @Scope("prototype")
     public Class<?> getGeneric(DependencyDescriptor dependencyDescriptor) {
+
         return dependencyDescriptor.getResolvableType().resolveGeneric();
     }
+
 
 }

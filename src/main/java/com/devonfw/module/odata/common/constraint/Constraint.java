@@ -1,46 +1,41 @@
 package com.devonfw.module.odata.common.constraint;
 
-import java.util.Arrays;
+import java.util.Optional;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 public interface Constraint {
 
-    static Constraint fromDataIntegrityViolationException(
+    static String fromDataIntegrityViolationException(
             DataIntegrityViolationException e) {
 
-        Constraint constraint = UniqueConstraint.NONE.getByDataIntegrityViolationException(e);
-        if (constraint == null) {
-            constraint = ForeignKeyConstraint.NONE.getByDataIntegrityViolationException(e);
+        Optional optionalConstraint = ConstraintConfiguration.getInstance().getConstraintsList().stream()
+                .filter(enumObject -> enumObject instanceof Constraint)
+                .filter(constraintEnum -> findByException((Constraint) constraintEnum, e)).findFirst();
+
+        if (optionalConstraint.isPresent()) {
+            return ((Constraint) optionalConstraint.get()).getConstraintName();
         }
-        return constraint;
+        return e.getMessage();
     }
 
-    default Constraint getByConstraintName(String constraintName) {
+    static boolean findByException(Constraint constraint, DataIntegrityViolationException exception) {
 
-        return Arrays.stream(getValues())
-                .filter(value -> checkConstraintContainsName(constraintName, value))
-                .findFirst()
-                .orElse(null);
+        return ((ConstraintViolationException) exception.getCause()).getConstraintName().contains(getConstraintName(constraint));
     }
 
-    default boolean checkConstraintContainsName(String constraintName,
-            Constraint constraint) {
+    static String getConstraintName(Constraint constraint) {
 
-        if (constraintName != null && constraint != null && constraint.getConstraintName() != null) {
-            return constraintName.contains(constraint.getConstraintName().toUpperCase());
-        }
-        return false;
+        return constraintIsValid(constraint) ? constraint.getConstraintName().toUpperCase() : null;
     }
 
-    default Constraint getByDataIntegrityViolationException(
-            DataIntegrityViolationException e) {
+    static boolean constraintIsValid(Constraint constraint) {
 
-        return getByConstraintName(((ConstraintViolationException) e.getCause()).getConstraintName());
+        return constraint != null && constraint.getConstraintName() != null;
     }
-
-    Constraint[] getValues();
 
     String getConstraintName();
+
+    Constraint[] getValues();
 }

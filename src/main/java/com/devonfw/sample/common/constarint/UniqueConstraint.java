@@ -13,7 +13,6 @@ import static com.devonfw.sample.dataaccess.api.SampleEntity.UQ_CHAPTERGROUPING_
 @AllArgsConstructor
 public enum UniqueConstraint implements Constraint {
 
-
     CHAPTERGROUPING_KEYFIGURE(UQ_CHAPTERGROUPING_KEYFIGURE),
     NONE;
 

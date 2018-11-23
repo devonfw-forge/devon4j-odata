@@ -112,7 +112,7 @@ public class ODataManagingServiceImpl extends AbstractODataManagingService {
         ODataService sourceService = getService(sourceEntitySet.getName());
 
         ODataAnnotationNavInfoUtil navigationInfo =
-                ODataManagingServiceUtil.getNavigation(sourceService.getToClass(), targetService.getToClass(), null);
+                ODataManagingServiceUtil.getNavigation(sourceService.getToClass(), targetService.getToClass(), navigationProperty);
 
         return sourceService
                 .setRelation(targetKeys, (ODataSet) sourceData, targetService.getEntityClass(), navigationInfo,

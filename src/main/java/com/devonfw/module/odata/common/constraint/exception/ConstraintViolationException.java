@@ -5,11 +5,6 @@ import com.devonfw.module.odata.common.constraint.Constraint;
 
 public class ConstraintViolationException extends RuntimeException {
 
-    public ConstraintViolationException(Constraint constraint) {
-
-        super(constraint.getConstraintName());
-    }
-
     public ConstraintViolationException(String message) {
 
         super(message);
