@@ -1,13 +1,17 @@
 package com.devonfw.sample.common.to;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 import org.apache.olingo.odata2.api.annotation.edm.*;
 import com.devonfw.module.odata.common.api.ODataSet;
 
+
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EdmComplexType(name = "Sample")
@@ -39,6 +43,5 @@ public class SampleEntitySet implements ODataSet<Long> {
 
     @EdmNavigationProperty
     private List<SampleEntitySet> children;
-
 
 }

@@ -4,5 +4,7 @@ import java.io.Serializable;
 
 public interface ODataSet<ID> extends Serializable {
 
-  ID getId();
+    ID getId();
+
+    void setId(ID id);
 }

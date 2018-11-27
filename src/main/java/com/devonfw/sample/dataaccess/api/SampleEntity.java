@@ -1,7 +1,6 @@
 package com.devonfw.sample.dataaccess.api;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,6 +8,9 @@ import java.util.List;
 import org.hibernate.annotations.Nationalized;
 import com.devonfw.module.odata.common.api.ODataEntity;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -19,7 +21,7 @@ import com.devonfw.module.odata.common.api.ODataEntity;
         columnNames = "\"KeyFigure\""
 )
 )
-public class SampleEntity implements ODataEntity {
+public class SampleEntity implements ODataEntity<Long> {
 
     public static final String UQ_CHAPTERGROUPING_KEYFIGURE = "UQ_TestEntity_KeyFigure";
 
@@ -49,6 +51,7 @@ public class SampleEntity implements ODataEntity {
     @JoinColumn(name = "\"AssignedParent_ID\"")
     public SampleEntity parent;
 
+    @Singular
     @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<SampleEntity> children;
 }
